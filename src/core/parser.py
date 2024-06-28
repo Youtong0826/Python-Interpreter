@@ -1,6 +1,6 @@
-from lexer import Lexer
-from _ast_ import Node, DataNode, BinaryOperatorNode
-from _token import DataType, Operator
+from core._ast_ import DataNode, BinaryOperatorNode
+from core._token import DataType, Operator
+from core.lexer import Lexer
 from typing import Union
 
 class Parser:
@@ -24,12 +24,21 @@ class Parser:
         
         raise SyntaxError("Invalid syntax")
         
-    def __expr(self):
+    def __term(self):
         node = self.__factor()
-        while self.__token and isinstance(self.__token.type, Operator):
+        while self.__token and self.__token.type in [Operator.MUL, Operator.DIV]:
             op = self.__token
             self.__throw(op.type)
             node = BinaryOperatorNode(op, node, self.__factor())
+            
+        return node
+        
+    def __expr(self):
+        node = self.__term()
+        while self.__token and self.__token.type in [Operator.ADD, Operator.SUB]:
+            op = self.__token
+            self.__throw(op.type)
+            node = BinaryOperatorNode(op, node, self.__term())
             
         return node
             
