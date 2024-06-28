@@ -7,7 +7,7 @@ from core._token import (
 from typing import Union
 
 class Lexer:
-    def __init__(self, text: str = "") -> None:
+    def __init__(self, text: str) -> None:
         self.text = text
         self.__index = 0
         self.__size = len(text)
