@@ -1,4 +1,4 @@
-from _token import Token
+from core._token import Token
 from typing import Any
 
 class ASTNode:
