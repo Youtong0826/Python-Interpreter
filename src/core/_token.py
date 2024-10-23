@@ -24,6 +24,7 @@ class DataType(Enum):
     FLOAT = 3 # a float number be like 3.14
     SPACE = 4
     STRING = 5
+    VAR = 6
 
 class Convert:
     @staticmethod
@@ -55,17 +56,18 @@ class Convert:
         if val.isdecimal():
             return Convert.integer()
         
-        elif val == ' ':
-            return Convert.space()
+        match val:
+            case ' ':
+                return Convert.space()
         
-        elif val == Brackets.STRING.value:
-            return Convert.string()
-        
-        elif val == Prefix.VAR.value:
-            return Prefix.VAR
+            case Brackets.STRING.value:
+                return Convert.string()
 
-        else:
-            return Convert.character()
+            case Prefix.VAR.value:
+                return DataType.VAR
+            
+            case _:
+                return Convert.character()
 
 @dataclass
 class Variable:
@@ -81,7 +83,7 @@ class Variable:
 
 @dataclass
 class Token:
-    type: Union[Operator, DataType, Variable]
+    type: Union[Operator, DataType]
     value: Any
 
     def __str__(self) -> str:
