@@ -62,11 +62,11 @@ class Lexer:
                     self.__advance()
                     return self.next()
                 
-                case Prefix.VAR:
-                    return Token(Variable, self.__read_variable())
+                case DataType.VAR:
+                    return Token(DataType.VAR, self.__read_variable())
                 
                 case DataType.STRING:
-                    return Token(DataType.STRING, self.__read_string)
+                    return Token(DataType.STRING, self.__read_string())
 
                 case DataType.INT:
                     return Token(DataType.INT, self.__read_number())
