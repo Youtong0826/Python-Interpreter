@@ -2,6 +2,13 @@ from dataclasses import dataclass
 from typing import Union, Any
 from enum import Enum
 
+class Prefix(Enum):
+    VAR = '?'
+
+class Brackets(Enum):
+    STRING = '"' # a string be like "abc"
+    TUPLE = '('  # a tuple be like (1, 3.0, "abc")
+    LIST = '['   # a list be like [0, 1, 2, 3]
 
 class Operator(Enum):
     ADD = '+'
@@ -10,13 +17,72 @@ class Operator(Enum):
     DIV = '/'
     
 class DataType(Enum):
-    NUM = 1
-    CHR = 2
+    INT = 0   # a integer number be like 123
+    CHR = 1   # a character be like "c"
+    FLOAT = 2 # a float number be like 3.14
+    SPACE = 3
+    STRING = 4
+
+class Convert:
+    @staticmethod
+    def integer():
+        return DataType.INT
+    
+    @staticmethod
+    def character():
+        return DataType.CHR
+    
+    @staticmethod
+    def float():
+        return DataType.FLOAT
+    
+    @staticmethod
+    def space():
+        return DataType.SPACE
+    
+    @staticmethod
+    def string():
+        return DataType.STRING
+    
+    @staticmethod
+    def token_type(val: str):
+        if val.isdecimal():
+            return Convert.integer()
+        
+        elif val == ' ':
+            return Convert.space()
+        
+        elif val == Brackets.STRING.value:
+            return Convert.string()
+        
+        elif val == Prefix.VAR.value:
+            return Prefix.VAR
+
+        else:
+            return Convert.character()
+
+@dataclass
+class Variable:
+    type: Union[Operator, DataType]
+    value: Any
+
+    def __str__(self) -> str:
+        return self.value
+    
+    def __repr__(self):
+        return f"<Variable type={self.type} value={self.value}>"
 
 @dataclass
 class Token:
-    type: Union[Operator, DataType]
+    type: Union[Operator, DataType, Variable]
     value: Any
-    
+
     def __str__(self) -> str:
         return f"{self.type}: {self.value}"
+    
+    def __repr__(self):
+        return f"<Token type={self.type} value={self.value}>"
+    
+if __name__ == "__main__":
+    i = input()
+    print(i.isdecimal())
