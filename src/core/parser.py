@@ -17,16 +17,21 @@ class Parser:
     
     def __factor(self):
         match self.__token.type:
-            case DataType.NUM:
+            case DataType.INT:
                 node = DataNode(self.__token, int(self.__token.value))
-                self.__throw(DataType.NUM)
+                self.__throw(DataType.INT)
                 return node
-        
+            
+            case DataType.STRING:
+                node = DataNode(self.__token, self.__token.value)
+                self.__throw(DataType.STRING)  
+                return node  
         raise SyntaxError("Invalid syntax")
         
     def __term(self):
         node = self.__factor()
         while self.__token and self.__token.type in [Operator.MUL, Operator.DIV]:
+            print(self.__token.type)
             op = self.__token
             self.__throw(op.type)
             node = BinaryOperatorNode(op, node, self.__factor())
@@ -36,6 +41,7 @@ class Parser:
     def __expr(self):
         node = self.__term()
         while self.__token and self.__token.type in [Operator.ADD, Operator.SUB]:
+            print(self.__token.type)
             op = self.__token
             self.__throw(op.type)
             node = BinaryOperatorNode(op, node, self.__term())
