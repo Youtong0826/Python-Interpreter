@@ -1,5 +1,5 @@
 from core._ast_ import DataNode, BinaryOperatorNode
-from core._token import DataType, Operator
+from core._token import DataType, Operator, Variable
 from core.lexer import Lexer
 from typing import Union
 
@@ -16,17 +16,9 @@ class Parser:
             raise TypeError(f"Expected token {type}, but got {self.__token.type}")
     
     def __factor(self):
-        match self.__token.type:
-            case DataType.INT:
-                node = DataNode(self.__token, int(self.__token.value))
-                self.__throw(DataType.INT)
-                return node
-            
-            case DataType.STRING:
-                node = DataNode(self.__token, self.__token.value)
-                self.__throw(DataType.STRING)  
-                return node  
-        raise SyntaxError("Invalid syntax")
+        node = DataNode(self.__token, self.__token.value)
+        self.__throw(self.__token.type)
+        return node
         
     def __term(self):
         node = self.__factor()
