@@ -4,6 +4,7 @@ from enum import Enum
 
 class Prefix(Enum):
     VAR = '?'
+    FUNC = '$'
 
 class Brackets(Enum):
     STRING = '"' # a string be like "abc"
@@ -17,13 +18,18 @@ class Operator(Enum):
     DIV = '/'
     
 class DataType(Enum):
-    INT = 0   # a integer number be like 123
-    CHR = 1   # a character be like "c"
-    FLOAT = 2 # a float number be like 3.14
-    SPACE = 3
-    STRING = 4
+    MISSING = 0
+    INT = 1   # a integer number be like 123
+    CHR = 2   # a character be like "c"
+    FLOAT = 3 # a float number be like 3.14
+    SPACE = 4
+    STRING = 5
 
 class Convert:
+    @staticmethod
+    def missing():
+        return DataType.MISSING
+
     @staticmethod
     def integer():
         return DataType.INT
@@ -63,8 +69,9 @@ class Convert:
 
 @dataclass
 class Variable:
-    type: Union[Operator, DataType]
+    name: str
     value: Any
+    type: Union[Operator, DataType]
 
     def __str__(self) -> str:
         return self.value
