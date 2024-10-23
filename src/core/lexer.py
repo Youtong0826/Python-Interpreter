@@ -63,7 +63,7 @@ class Lexer:
                     return self.next()
                 
                 case Prefix.VAR:
-                    return
+                    return Token(Variable, self.__read_varible())
                 
                 case DataType.STRING:
                     return Token(DataType.STRING, self.__read_string)
