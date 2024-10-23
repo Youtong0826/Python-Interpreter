@@ -40,7 +40,7 @@ class Lexer:
         self.__advance()
         return self.text[start:end]
     
-    def __read_varible(self):
+    def __read_variable(self):
         start = self.__index
         while self.__chr and self.__chr != '=':
             self.__advance()
@@ -63,7 +63,7 @@ class Lexer:
                     return self.next()
                 
                 case Prefix.VAR:
-                    return Token(Variable, self.__read_varible())
+                    return Token(Variable, self.__read_variable())
                 
                 case DataType.STRING:
                     return Token(DataType.STRING, self.__read_string)
