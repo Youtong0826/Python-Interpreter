@@ -1,9 +1,10 @@
 from core import (
     NodeVisitor, 
     Parser, 
-    Lexer)
+    Lexer
+)
 
-class InterPreder(NodeVisitor):
+class InterPreter(NodeVisitor):
     def __init__(self, text: str) -> None:
         super().__init__()
         self.__parser = Parser(Lexer(text))
@@ -14,5 +15,5 @@ class InterPreder(NodeVisitor):
     
 if __name__ == "__main__":
     while((i := input("[Arithmetic Interpreder]> ")) != "end"):
-        ip = InterPreder(i)
+        ip = InterPreter(i)
         print("result:", ip.calc().value)
