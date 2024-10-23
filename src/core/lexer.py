@@ -3,6 +3,7 @@ from core._token import (
     Operator,
     Prefix,
     Convert,
+    Variable,
     Token
 )
 
@@ -46,9 +47,11 @@ class Lexer:
 
         val_name = self.text[start:self.__index]
         if self.__chr != '=':
-            return 
+            return Variable(val_name, None, Convert.missing())
         
         self.__advance()
+        nxt = self.next()
+        return Variable(val_name, nxt.value, nxt.type)
     
     def next(self) -> Union[Token, None]:
         if (self.__index < self.__size):
