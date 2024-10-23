@@ -1,6 +1,8 @@
 from core._token import (
     DataType,
     Operator,
+    Prefix,
+    Convert,
     Token
 )
 
@@ -22,16 +24,53 @@ class Lexer:
         while self.__chr and self.__chr.isdecimal():
             self.__advance()
             
-        return int(self.text[start:self.__index])      
+        return int(self.text[start:self.__index])  
+
+    def __read_string(self):
+        self.__advance()
+        start = self.__index
+        while self.__chr and self.__chr != '"':
+            self.__advance()
+
+        if self.__chr != '"':
+            raise SyntaxError("unterminated string literal")
+
+        end = self.__index
+        self.__advance()
+        return self.text[start:end]
+    
+    def __read_varible(self):
+        start = self.__index
+        while self.__chr and self.__chr != '=':
+            self.__advance()
+
+        val_name = self.text[start:self.__index]
+        if self.__chr != '=':
+            return 
+        
+        self.__advance()
     
     def next(self) -> Union[Token, None]:
         if (self.__index < self.__size):
             chr = self.__chr
-            if chr.isdecimal():
-                return Token(DataType.NUM, self.__read_number())
             
-            self.__advance()
-            return Token(Operator(chr), chr)
+            match Convert.token_type(chr):
+                case DataType.SPACE:
+                    self.__advance()
+                    return self.next()
+                
+                case Prefix.VAR:
+                    return
+                
+                case DataType.STRING:
+                    return Token(DataType.STRING, self.__read_string)
+
+                case DataType.INT:
+                    return Token(DataType.INT, self.__read_number())
+                
+                case DataType.CHR | _:
+                    self.__advance()
+                    return Token(Operator(chr), chr)
         
 
 if __name__ == "__main__":
