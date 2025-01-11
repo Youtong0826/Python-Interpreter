@@ -71,20 +71,22 @@ class Convert:
 
 @dataclass
 class Variable:
-    name: str
-    value: Any
-    type: Union[Operator, DataType]
+    def __init__(self, name: str, type: Union[Operator, DataType], value: Any):
+        self.name = name
+        self.type = type
+        self.value = value
 
     def __str__(self) -> str:
-        return self.value
+        return f"{self.name} {self.value}"
     
     def __repr__(self):
         return f"<Variable type={self.type} value={self.value}>"
 
-@dataclass
+
 class Token:
-    type: Union[Operator, DataType]
-    value: Any
+    def __init__(self, type: Union[Operator, DataType], value: Any):
+        self.type = type
+        self.value = value
 
     def __str__(self) -> str:
         return f"{self.type}: {self.value}"

@@ -45,18 +45,17 @@ class Lexer:
         while self.__chr and self.__chr != '=':
             self.__advance()
 
-        val_name = self.text[start:self.__index]
+        val_name = self.text[start:self.__index].replace(" ","").replace("?", "")
         if self.__chr != '=':
-            return Variable(val_name, None, Convert.missing())
+            return Variable(val_name, Convert.missing(), None)
         
         self.__advance()
         nxt = self.next()
-        return Variable(val_name, nxt.value, nxt.type)
+        return Variable(val_name, nxt.type, nxt.value)
     
     def next(self) -> Union[Token, None]:
         if (self.__index < self.__size):
             chr = self.__chr
-            
             match Convert.token_type(chr):
                 case DataType.SPACE:
                     self.__advance()
@@ -77,8 +76,8 @@ class Lexer:
         
 
 if __name__ == "__main__":
-    test = "1+2*3/4-5"
+    test = "?a = 1"
     
     L = Lexer(test)
     while s := L.next():
-        print(s)
+        print(str(s))
