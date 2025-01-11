@@ -69,7 +69,6 @@ class Convert:
             case _:
                 return Convert.character()
 
-@dataclass
 class Variable:
     def __init__(self, name: str, type: Union[Operator, DataType], value: Any):
         self.name = name
@@ -81,7 +80,6 @@ class Variable:
     
     def __repr__(self):
         return f"<Variable type={self.type} value={self.value}>"
-
 
 class Token:
     def __init__(self, type: Union[Operator, DataType], value: Any):
