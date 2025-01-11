@@ -1,5 +1,5 @@
 from core._ast_ import DataNode, BinaryOperatorNode
-from core._token import DataType, Operator, Variable
+from core._token import DataType, Operator
 from core.lexer import Lexer
 from typing import Union
 
